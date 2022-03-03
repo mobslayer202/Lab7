@@ -7,6 +7,7 @@ import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import edu.ucsd.cse110.dogegotchi.daynightcycle.IDayNightCycleObserver;
 import edu.ucsd.cse110.dogegotchi.observer.ISubject;
 import edu.ucsd.cse110.dogegotchi.ticker.ITickerObserver;
 
@@ -80,6 +81,7 @@ public class Doge implements ISubject<IDogeObserver>, ITickerObserver {
      */
     private void tryRandomMoodSwing() {
         // TODO: Exercise 1 -- Implement this method...
+
     }
 
     @Override
@@ -116,5 +118,30 @@ public class Doge implements ISubject<IDogeObserver>, ITickerObserver {
         // TODO: Implement asleep and eating states, and transitions between all states.
         SLEEPING,
         EATING;
+    }
+
+
+    public class DogeBehaviorObserver implements IDayNightCycleObserver {
+
+
+        /**
+         * Signalled when day/night starts.
+         *
+         * @param newPeriod Indicates whether day or night just started.
+         */
+        @Override
+        public void onPeriodChange(Period newPeriod){
+
+            // Period is day
+            if(newPeriod.equals(Period.DAY)){
+
+                setState(State.HAPPY);
+            }
+            // Period is night
+            else if(newPeriod.equals(Period.NIGHT)){
+
+                setState(State.SLEEPING);
+            }
+        }
     }
 }

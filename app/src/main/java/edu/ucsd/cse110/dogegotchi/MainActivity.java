@@ -17,6 +17,7 @@ import java.util.Map;
 
 import edu.ucsd.cse110.dogegotchi.daynightcycle.DayNightCycleMediator;
 import edu.ucsd.cse110.dogegotchi.doge.Doge;
+import edu.ucsd.cse110.dogegotchi.doge.Doge.DogeBehaviorObserver;
 import edu.ucsd.cse110.dogegotchi.doge.DogeView;
 import edu.ucsd.cse110.dogegotchi.sprite.Coord;
 import edu.ucsd.cse110.dogegotchi.ticker.AsyncTaskTicker;
@@ -39,6 +40,9 @@ public class MainActivity extends Activity {
     private MediaPlayer dayPlayer;
 
     private MediaPlayer nightPlayer;
+
+    // My Code
+    private DogeBehaviorObserver dogeBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +84,11 @@ public class MainActivity extends Activity {
 
         ticker.register(gameView);
         this.dayNightCycleMediator.register(gameView);
+
+        // My Code
+        this.dogeBehavior = this.doge.new DogeBehaviorObserver();
+        this.dayNightCycleMediator.register(dogeBehavior);
+
 
         /**
          * TODO: Exercise 2 -- MVP
@@ -175,6 +184,12 @@ public class MainActivity extends Activity {
         stateCoords.put(Doge.State.SLEEPING,
                         new Coord(getResources().getInteger(R.integer.sleeping_x),
                                   getResources().getInteger(R.integer.sleeping_y)));
+
+        stateBitmaps.put(Doge.State.SAD,
+                BitmapFactory.decodeResource(getResources(), R.drawable.sad_2x));
+        stateCoords.put(Doge.State.SAD,
+                new Coord(getResources().getInteger(R.integer.sad_x),
+                        getResources().getInteger(R.integer.sad_y)));
 
         // TODO: Exercise 2 - Set up sprite and coords for EATING state.
         // TODO: Exercise 3 - You may need to create the Factory of Strategies here
