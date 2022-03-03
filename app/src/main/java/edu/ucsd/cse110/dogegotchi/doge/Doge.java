@@ -6,6 +6,7 @@ import com.google.common.base.Preconditions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Random;
 
 import edu.ucsd.cse110.dogegotchi.daynightcycle.IDayNightCycleObserver;
 import edu.ucsd.cse110.dogegotchi.observer.ISubject;
@@ -82,6 +83,15 @@ public class Doge implements ISubject<IDogeObserver>, ITickerObserver {
     private void tryRandomMoodSwing() {
         // TODO: Exercise 1 -- Implement this method...
 
+        // 50% chance success
+        Random rand = new Random();
+        boolean swing = rand.nextInt(2) == 0;
+
+        // If swing is true and doge is happy/day time
+        if(swing && (state == State.HAPPY)){
+
+            setState(State.SAD);
+        }
     }
 
     @Override
