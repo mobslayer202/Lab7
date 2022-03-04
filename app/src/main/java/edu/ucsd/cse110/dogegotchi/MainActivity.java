@@ -85,9 +85,7 @@ public class MainActivity extends Activity {
         ticker.register(gameView);
         this.dayNightCycleMediator.register(gameView);
 
-        // My Code
-        this.dogeBehavior = this.doge.new DogeBehaviorObserver();
-        this.dayNightCycleMediator.register(dogeBehavior);
+        // See under Exercise 2
 
 
         /**
@@ -108,6 +106,12 @@ public class MainActivity extends Activity {
                           steakButton     = foodMenu.findViewById(R.id.SteakButton),
                           turkeyLegButton = foodMenu.findViewById(R.id.TurkeyLegButton);
         // hm... should prob do something with this
+
+        this.dogeBehavior = this.doge.new DogeBehaviorObserver(foodMenu);
+        this.dayNightCycleMediator.register(dogeBehavior);
+        this.doge.register(dogeBehavior);
+        this.ticker.register(dogeBehavior);
+
 
         /**
          * TODO: Exercise 3 -- Strategy & Factory
@@ -192,6 +196,13 @@ public class MainActivity extends Activity {
                         getResources().getInteger(R.integer.sad_y)));
 
         // TODO: Exercise 2 - Set up sprite and coords for EATING state.
+
+        stateBitmaps.put(Doge.State.EATING,
+                BitmapFactory.decodeResource(getResources(), R.drawable.eating_2x));
+        stateCoords.put(Doge.State.EATING,
+                new Coord(getResources().getInteger(R.integer.eating_x),
+                        getResources().getInteger(R.integer.eating_y)));
+
         // TODO: Exercise 3 - You may need to create the Factory of Strategies here
         this.dogeView = new DogeView(this, Doge.State.HAPPY, stateBitmaps, stateCoords);
 
@@ -211,4 +222,7 @@ public class MainActivity extends Activity {
         this.ticker.stop();
         super.onDestroy();
     }
+
+
+
 }

@@ -31,6 +31,7 @@
             android:contentDescription="Feed doge with Ham."
             android:scaleType="centerInside"
             android:src="@drawable/ham_2x"
+
             tools:src="@drawable/ham_2x" />
 
         <ImageButton
@@ -41,6 +42,7 @@
             android:contentDescription="Feed doge with Steak."
             android:scaleType="centerInside"
             android:src="@drawable/steak_2x"
+
             tools:src="@drawable/steak_2x" />
 
         <ImageButton
@@ -50,6 +52,7 @@
             android:background="@drawable/button_effect"
             android:contentDescription="Feed doge with Turkey Leg."
             android:src="@drawable/turkey_leg_2x"
+
             tools:src="@drawable/turkey_leg_2x" />
 
     </TableRow>

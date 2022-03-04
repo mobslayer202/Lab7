@@ -1,6 +1,8 @@
 package edu.ucsd.cse110.dogegotchi.doge;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.TableRow;
 
 import com.google.common.base.Preconditions;
 
@@ -8,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
 
+import edu.ucsd.cse110.dogegotchi.MainActivity;
+import edu.ucsd.cse110.dogegotchi.R;
 import edu.ucsd.cse110.dogegotchi.daynightcycle.IDayNightCycleObserver;
 import edu.ucsd.cse110.dogegotchi.observer.ISubject;
 import edu.ucsd.cse110.dogegotchi.ticker.ITickerObserver;
@@ -131,9 +135,39 @@ public class Doge implements ISubject<IDogeObserver>, ITickerObserver {
     }
 
 
-    public class DogeBehaviorObserver implements IDayNightCycleObserver {
+    public class DogeBehaviorObserver implements IDayNightCycleObserver, IDogeObserver, ITickerObserver {
 
+        View foodMenu;
+        int eatingTime;
+        int startTime;
+        boolean night;
 
+        public DogeBehaviorObserver(View foodMenu){
+
+            this.foodMenu = foodMenu;
+            this.eatingTime = 0;
+            this.startTime = 0;
+            this.night = false;
+
+            View ham = foodMenu.findViewById(R.id.HamButton);
+            View steak = foodMenu.findViewById(R.id.SteakButton);
+            View turkey = foodMenu.findViewById(R.id.TurkeyLegButton);
+
+            ham.setOnClickListener((view) -> {
+
+                setState(State.EATING);
+            });
+
+            steak.setOnClickListener((view) -> {
+
+                setState(State.EATING);
+            });
+
+            turkey.setOnClickListener((view) -> {
+
+                setState(State.EATING);
+            });
+        }
         /**
          * Signalled when day/night starts.
          *
@@ -145,13 +179,61 @@ public class Doge implements ISubject<IDogeObserver>, ITickerObserver {
             // Period is day
             if(newPeriod.equals(Period.DAY)){
 
+                night = false;
                 setState(State.HAPPY);
             }
             // Period is night
-            else if(newPeriod.equals(Period.NIGHT)){
+            else if(newPeriod.equals(Period.NIGHT)) {
 
-                setState(State.SLEEPING);
+                // If eating, wait
+                if(state.equals(State.EATING)){
+
+                    night = true;
+                }
+                else {
+                    setState(State.SLEEPING);
+                }
             }
         }
+
+
+        @Override
+        public void onStateChange(State newState) {
+
+            // If sad/hungry display menu
+            if(newState.equals(State.SAD)){
+
+                foodMenu.setVisibility(View.VISIBLE);
+            }
+            // If eating, hide menu and start timer
+            else if(newState.equals(State.EATING)){
+
+                foodMenu.setVisibility(View.INVISIBLE);
+                startTime = eatingTime;
+            }
+            // If time is night and doge happy
+            else if(newState.equals(State.HAPPY)){
+
+                if(night){
+
+                    setState(State.SLEEPING);
+                }
+            }
+
+        }
+
+        @Override
+        public void onTick() {
+
+            // Wait 5 ticks before finish eating
+            this.eatingTime++;
+            int difference = eatingTime - startTime;
+            if(state.equals(State.EATING) && difference > 5){
+
+                setState(State.HAPPY);
+            }
+        }
+
+
     }
 }

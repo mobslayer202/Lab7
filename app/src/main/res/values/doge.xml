@@ -16,6 +16,9 @@
 
     <!-- TODO: Exercise 2 - Setup EATING coordinates (also set up sprite in MainActivity.java) -->
 
+    <!-- Eating -->
+    <integer name="eating_x">600</integer>
+    <integer name="eating_y">300</integer>
 
     <!-- Number of times a mood swing may happen during the day. -->
     <integer name="mood_swings_per_period">5</integer>
